@@ -7,6 +7,10 @@ body {
     padding: 0;
 }
 
+.login {
+    min-height: 83vh;
+}
+
 /* Navbar */
 .navbar {
     background-color: #ffffff;
@@ -61,20 +65,20 @@ footer {
 
 /* Profile Picture */
 .profile-picture {
-    width: 200px; /* Slightly larger for better emphasis */
+    width: 200px;
     height: 200px;
-    border-radius: 50%; /* Keeps it circular */
-    object-fit: cover; /* Ensures the image fills the circle properly */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Adds a soft shadow for depth */
-    border: 5px solid #ffffff; /* Adds a clean white border for separation */
-    background: linear-gradient(135deg, #ff5722, #ffc107); /* Optional gradient for subtle highlight */
-    padding: 5px; /* Space for the border */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover animations */
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 5px solid #ffffff;
+    background: linear-gradient(135deg, #ff5722, #ffc107);
+    padding: 5px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .profile-picture:hover {
-    transform: scale(1.1); /* Enlarges slightly on hover */
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); /* Increases shadow depth on hover */
+    transform: scale(1.1);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Skills Section */
@@ -99,7 +103,7 @@ footer {
 /* Projects Section */
 .project-card {
     border: none;
-    background-color: #ffffff;
+    background-color: #f8f9fa; /* Switched to gray */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -165,4 +169,30 @@ a {
 a:hover {
     color: #db4437;
     text-decoration: underline;
+}
+
+/* Section Backgrounds */
+header,
+#skills,
+#experience,
+#projects,
+#contact {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+#skills {
+    background-color: #f8f9fa; /* Switched to gray */
+}
+
+#experience {
+    background-color: #ffffff; /* Switched to white */
+}
+
+#projects {
+    background-color: #f8f9fa; /* Switched to gray */
+}
+
+#contact {
+    background-color: #ffffff; /* Switched to white */
 }

@@ -16,9 +16,6 @@ urlpatterns = [
     path('projects/delete/<int:id>/', views.delete_project, name='delete_project'),
     path('projects/<int:id>/', views.show_project ,name='show_project'),
     path('payment/', views.payment_view, name='payment'),
-    path('confirm_payment/', views.confirm_payment, name='confirm_payment'),
-    path('premium_subcription/', views.subscribe_to_premium, name='subscribe_to_premium'),
     path('transaction_history/', views.transaction_history, name='transaction_history'),
-    path('contact/<str:username>/', views.contact, name='contact'),
 
 ]
