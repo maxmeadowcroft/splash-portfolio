@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Project{% endblock %}
+
+{% block content %}
+<div class="container-xl px-4 mt-4">
+
+    <h1 class="mb-4 text-primary text-center">Edit Project</h1>
+
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="alert-messages mb-4">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Edit Project Form -->
+    <div class="card">
+        <div class="card-header bg-warning text-dark">Edit Your Project</div>
+        <div class="card-body">
+            {% load widget_tweaks %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row mb-3">
+                    <!-- Title Field -->
+                    <div class="col-md-6">
+                        <label for="id_title" class="form-label">Project Title</label>
+                        {{ form.title|add_class:"form-control" }}
+                    </div>
+            
+                    <!-- Description Field -->
+                    <div class="col-md-6">
+                        <label for="id_description" class="form-label">Project Description</label>
+                        {{ form.description|add_class:"form-control" }}
+                    </div>
+                </div>
+            
+                <div class="row mb-3">
+                    <!-- Image Field -->
+                    <div class="col-md-6">
+                        <label for="id_image" class="form-label">Project Image</label>
+                        <div>
+                            <!-- Display the existing image if available -->
+                            {% if form.instance.image %}
+                                <img src="{{ form.instance.image.url }}" alt="Current Project Image" class="img-fluid mb-3" style="max-height: 200px;">
+                            {% else %}
+                                <p>No image uploaded yet.</p>
+                            {% endif %}
+                        </div>
+                        {{ form.image|add_class:"form-control" }} <!-- Add the class using add_class filter -->
+                        <!-- Image Preview Section -->
+                        <div id="image-preview-container" class="mt-2">
+                            <p id="image-file-name"></p> <!-- This will show the file name -->
+                            <img id="image-preview" class="img-fluid" style="max-height: 200px; display:none;"> <!-- Image preview -->
+                        </div>
+                    </div>
+            
+                    <!-- Link Field -->
+                    <div class="col-md-6">
+                        <label for="id_link" class="form-label">Project Link</label>
+                        {{ form.link|add_class:"form-control" }}
+                    </div>
+                </div>
+            
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript to preview the image when selecting a new file
+    document.getElementById('id_image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const fileName = file.name;
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const preview = document.getElementById('image-preview');
+            const fileNameDisplay = document.getElementById('image-file-name');
+            
+            // Display the file name
+            fileNameDisplay.textContent = `Selected file: ${fileName}`;
+
+            // Display the image preview
+            preview.style.display = 'block';
+            preview.src = e.target.result;
+        };
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+{% endblock %}

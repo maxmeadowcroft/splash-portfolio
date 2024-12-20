@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Premium Membership{% endblock %}
+
+{% block content %}
+{% if user.is_premium%}
+<h2>premium</h2>
+{%else%}
+<section class="premium-membership my-5">
+    <div class="container">
+        <div class="premium-card card shadow-lg p-4 bg-white">
+            <h2 class="card-title text-center text-danger">Subscribe to Premium Membership</h2>
+            <p class="text-center">Get unlimited projects, exclusive features, and more.</p>
+
+            <!-- Display messages -->
+            <div id="alert-messages" class="alert-messages mb-4"></div>
+
+            <form id="payment-form">
+                {% csrf_token %}
+
+                <!-- Payment Method Selection -->
+                <div class="mb-3">
+                    <label for="payment-method" class="form-label">Select Payment Method</label>
+                    <select id="payment-method" name="payment-method" class="form-select">
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="paypal">PayPal</option>
+                    </select>
+                </div>
+
+                <!-- Card Element will be rendered here -->
+                <div id="card-element" class="form-control mb-3"></div>
+
+                <!-- Display errors related to the card input -->
+                <div id="card-errors" class="alert alert-danger" role="alert" style="display: none;"></div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-danger btn-block">Subscribe Now - $2/month</button>
+            </form>
+        </div>
+    </div>
+</section>
+{%endif%}
+<!-- Bootstrap CSS -->
+
+<!-- Custom CSS -->
+<style>
+    body {
+        background-color: #f4f4f4;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        color: #333;
+    }
+    .premium-card {
+        max-width: 450px;
+        margin: auto;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+    }
+    .form-control {
+        padding: 10px;
+    }
+</style>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('pk_test_51QQnd0BopiD2AhCIOYSy0ULv1UL04slC0c7Agflxa8tgGFG2j6XeEqvxviH9zdi43E43vaBZhO0cJLV9O3cc6hEr00K5pK3Xg3');  // Your Stripe public key
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var selectedPaymentMethod = document.getElementById('payment-method').value;
+
+        // Create PaymentMethod with the card details
+        stripe.createPaymentMethod({
+            type: 'card',
+            card: card
+        }).then(function(result) {
+            if (result.error) {
+                var cardErrors = document.getElementById('card-errors');
+                cardErrors.textContent = result.error.message;
+                cardErrors.style.display = 'block';
+            } else {
+                var paymentMethodId = result.paymentMethod.id;
+                console.log("Payment Method ID:", paymentMethodId);  // Debugging line
+
+                // Send the payment method ID to the backend to create the subscription
+                fetch("{% url 'subscribe_to_premium' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({
+                        payment_method_id: paymentMethodId,
+                        payment_method: selectedPaymentMethod
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log("Backend Response:", data);  // Debugging line
+
+                    if (data.status === 'success') {
+                        displayMessage('Subscription successful!', 'success');
+                    } else {
+                        displayMessage('Subscription failed: ' + data.error, 'danger');
+                    }
+                });
+            }
+        });
+    });
+
+    function displayMessage(message, type) {
+        var alertMessages = document.getElementById('alert-messages');
+        alertMessages.innerHTML = ''; // Clear previous messages
+
+        var alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show';
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        alertMessages.appendChild(alertDiv);
+
+        // Set a timer to hide the message after 10 seconds
+        setTimeout(function() {
+            alertDiv.classList.remove('show');
+            alertDiv.classList.add('fade');
+            setTimeout(function() {
+                alertDiv.remove();
+            }, 150); // Transition duration for Bootstrap fade
+        }, 10000);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Confirmation{% endblock %}
+
+{% block content %}
+    <h2>Payment Confirmation</h2>
+    <p>Payment is in progress...</p>
+    <p>Client Secret: {{ client_secret }}</p>
+    <p>Payment ID: {{ payment_id }}</p>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<h2>Make a Payment</h2>
+
+<form action="{% url 'payment' %}" method="POST" id="payment-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div id="card-element">
+        <!-- A Stripe Element will be inserted here. -->
+    </div>
+    
+    <div id="card-errors" role="alert"></div>
+    <button type="submit" id="submit">Pay</button>
+</form>
+
+stripe.createPaymentMethod({
+    type: 'card',
+    card: card
+}).then(function(result) {
+    if (result.error) {
+        document.getElementById('card-errors').textContent = result.error.message;
+    } else {
+        var paymentMethodId = result.paymentMethod.id;
+        var paymentId = "{{ payment_id }}";  // Ensure payment ID is passed correctly here
+
+        // Check if payment_id is present
+        console.log('Payment ID:', paymentId);
+
+        fetch("{% url 'confirm_payment' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({
+                payment_method_id: paymentMethodId,
+                payment_id: paymentId  // Send payment ID to backend
+            })
+        })
+        .then(response => response.json())
+        .then(function(paymentIntent) {
+            if (paymentIntent.paymentIntent) {
+                alert("Payment successful!");
+            } else if (paymentIntent.error) {
+                alert("Payment failed: " + paymentIntent.error);
+            }
+        });
+    }
+});
+
+{% endblock %}

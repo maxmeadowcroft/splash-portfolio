@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Account{% endblock %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load form_tags %}
+
+{% block content %}
+<div class="container-xl px-4 mt-4">
+    <h1 class="mb-4">Manage Your Account</h1>
+
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="alert-messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <hr class="mt-0 mb-4">
+
+    <form id="profileForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Profile Picture Section -->
+            <div class="col-xl-4">
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header text-center">Profile Picture</div>
+                    <div class="card-body text-center">
+                        {% if user.profile_image %}
+                            <img id="profileImage" class="img-account-profile mb-2" src="{{ user.profile_image.url }}" alt="Profile Picture" style="width:150px;height:150px;">
+                        {% else %}
+                            <img id="profileImage" class="img-account-profile mb-2" src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Picture" style="width:150px;height:150px;">
+                        {% endif %}
+                        <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                        <!-- Profile Image Input Field -->
+                        {{ form.profile_image }}
+                        <button class="btn btn-danger btn-sm mt-2" type="button" onclick="document.getElementById('id_profile_image').click();">Upload New Image</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Details Section -->
+            <div class="col-xl-8">
+                <div class="card mb-4">
+                    <div class="card-header">Account Details</div>
+                    <div class="card-body">
+                        <!-- Render form errors -->
+                        {{ form.non_field_errors }}
+
+                        <!-- Username Section -->
+                        <div class="mb-3">
+                            {{ form.username.label_tag }}
+                            {{ form.username|add_class:"form-control" }}
+                            {{ form.username.errors }}
+                        </div>
+
+                        <!-- Name Section -->
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-6">
+                                {{ form.first_name.label_tag }}
+                                {{ form.first_name|add_class:"form-control" }}
+                                {{ form.first_name.errors }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.last_name.label_tag }}
+                                {{ form.last_name|add_class:"form-control" }}
+                                {{ form.last_name.errors }}
+                            </div>
+                        </div>
+
+                        <!-- Email Section -->
+                        <div class="mb-3">
+                            {{ form.email.label_tag }}
+                            {{ form.email|add_class:"form-control" }}
+                            {{ form.email.errors }}
+                        </div>
+
+                        <!-- Introduction Section -->
+                        <div class="mb-3">
+                            {{ form.introduction.label_tag }}
+                            {{ form.introduction|add_class:"form-control" }}
+                            {{ form.introduction.errors }}
+                        </div>
+
+                        <!-- LinkedIn URL Section -->
+                        <div class="mb-3">
+                            {{ form.linkedin_url.label_tag }}
+                            {{ form.linkedin_url|add_class:"form-control" }}
+                            {{ form.linkedin_url.errors }}
+                        </div>
+
+                        <!-- GitHub URL Section -->
+                        <div class="mb-3">
+                            {{ form.github_url.label_tag }}
+                            {{ form.github_url|add_class:"form-control" }}
+                            {{ form.github_url.errors }}
+                        </div>
+
+                        <!-- Work Experience Section -->
+                        <div class="mb-3">
+                            {{ form.experience.label_tag }}
+                            {{ form.experience|add_class:"form-control" }}
+                            {{ form.experience.errors }}
+                        </div>
+
+                        <!-- Skills Section -->
+                        <div class="mb-3">
+                            <label class="small mb-1">Skills</label>
+                            <ul class="list-group list-group-flush" id="skillsList">
+                                {% for skill in user.skills.all %}
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <div class="flex-grow-1 me-2">
+                                            <input class="form-control" type="text" name="skill_{{ skill.id }}" value="{{ skill.name }}">
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="remove_skill_{{ skill.id }}" id="remove_skill_{{ skill.id }}">
+                                            <label class="form-check-label small text-danger" for="remove_skill_{{ skill.id }}">
+                                                Remove
+                                            </label>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <li class="list-group-item">No skills added yet.</li>
+                                {% endfor %}
+                            </ul>
+                            <!-- New Skill Field -->
+                            {{ form.new_skill.label_tag }}
+                            {{ form.new_skill|add_class:"form-control mt-2" }}
+                            {{ form.new_skill.errors }}
+                        </div>
+
+                        <!-- Save Changes Button -->
+                        <div class="d-grid">
+                            <button class="btn btn-danger" type="submit">Save Changes</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

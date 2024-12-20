@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}View Project{% endblock %}
+
+{% block content %}
+<div class="container-xl px-4 mt-4">
+    <h1 class="mb-4 text-primary text-center">{{ project.title }}</h1>
+
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="alert-messages mb-4">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Project Details -->
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Description</h3>
+            <p class="card-text">{{ project.description }}</p>
+            <h3 class="card-title">Project Image</h3>
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid mb-3">
+            <h3 class="card-title">Link</h3>
+            <a href="{{ project.link }}" target="_blank" class="btn btn-info">Visit Project</a>
+        </div>
+    </div>
+
+    <!-- Edit and Delete Buttons -->
+    <div class="mt-4">
+        <a href="{% url 'edit_project' project.id %}" class="btn btn-warning">Edit Project</a>
+        <form action="{% url 'delete_project' project.id %}" method="POST" class="d-inline-block">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete Project</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

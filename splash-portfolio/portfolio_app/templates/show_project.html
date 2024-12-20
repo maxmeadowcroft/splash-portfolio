@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">{{ project.title }}</h1>
+
+    <!-- Project Images -->
+    <div class="row mb-4">
+        {% for image in images %}
+        <div class="col-md-4 mb-4">
+            <img src="{{ image.image.url }}" class="img-fluid rounded" alt="Project Image">
+        </div>
+        {% empty %}
+        <div class="col-md-12 mb-4">
+            <img src="https://via.placeholder.com/150" class="img-fluid rounded" alt="No image available">
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Project Description -->
+    <div class="mb-4">
+        <h3>Description</h3>
+        <p>{{ project.description }}</p>
+    </div>
+
+    <!-- Project Files (if any) -->
+    <div class="mb-4">
+        {% if project.files %}
+        <h3>Project Files</h3>
+        <a href="{{ project.files.url }}" class="btn btn-primary" target="_blank">Download Project File</a>
+        {% else %}
+        <p>No project files available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Back to Projects Button -->
+    <a href="{% url 'projects' %}" class="btn btn-secondary">Back to Projects</a>
+</div>
+{% endblock %}
