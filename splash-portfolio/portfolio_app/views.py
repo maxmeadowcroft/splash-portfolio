@@ -17,7 +17,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 import json
 # Set your Stripe secret key
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key ='1234'
 
 # =============== User Signup View ===============
 def signup(request):
