@@ -1,107 +1,168 @@
+/* General Styles */
 body {
     font-family: 'Aileron', sans-serif;
-    background-color: #ffffff; /* White background */
-    color: #000000; /* Black text */
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    padding: 0;
 }
 
+/* Navbar */
 .navbar {
     background-color: #ffffff;
 }
 
 .navbar-brand {
     display: inline-block;
-    width: 200px; /* Adjust width to scale logo text appropriately */
-    height: 100px; /* Adjust height if necessary */
+    width: 200px;
+    height: 100px;
     background: url("../images/splash_logo.png") no-repeat center;
     background-size: contain;
-    text-indent: -9999px; /* Hide alt text */
+    text-indent: -9999px;
     overflow: hidden;
 }
 
 .navbar-nav .nav-link {
-    font-family: 'Aileron', sans-serif;
-    color: #000;
+    color: #000000;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover {
     color: #db4437;
 }
 
+/* Buttons */
 .btn-primary, .btn-danger {
     font-family: 'Archivo Black', sans-serif;
     font-weight: 400;
     text-transform: uppercase;
     color: #ffffff;
-    background-color: #000;
+    background-color: #000000;
     border: none;
     padding: 0.6rem 1.5rem;
     border-radius: 30px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover, .btn-danger:hover {
     background-color: #db4437;
 }
 
+/* Footer */
 footer {
     background-color: #000000;
     color: #ffffff;
+    text-align: center;
     padding: 20px 0;
 }
 
-.login {
-    min-height: 80vh;
+/* Profile Picture */
+.profile-picture {
+    width: 200px; /* Slightly larger for better emphasis */
+    height: 200px;
+    border-radius: 50%; /* Keeps it circular */
+    object-fit: cover; /* Ensures the image fills the circle properly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Adds a soft shadow for depth */
+    border: 5px solid #ffffff; /* Adds a clean white border for separation */
+    background: linear-gradient(135deg, #ff5722, #ffc107); /* Optional gradient for subtle highlight */
+    padding: 5px; /* Space for the border */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover animations */
 }
 
-/* Custom styles for input fields */
+.profile-picture:hover {
+    transform: scale(1.1); /* Enlarges slightly on hover */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); /* Increases shadow depth on hover */
+}
+
+/* Skills Section */
+.skill-badge {
+    background-color: #f0f0f0;
+    color: #333333;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 25px;
+    text-transform: uppercase;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.skill-badge:hover {
+    background-color: #ff5722;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+/* Projects Section */
+.project-card {
+    border: none;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    text-align: center;
+    padding: 20px;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.project-img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.project-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.project-description {
+    font-size: 1rem;
+    color: #666666;
+}
+
+/* Form Inputs */
 input.form-control {
-    border: none; /* Remove all borders */
-    border-bottom: 2px solid #000; /* Add a black bottom border */
-    border-radius: 0; /* Remove rounded corners */
-    padding: 0.5rem 0; /* Adjust padding for better appearance */
-    font-size: 1rem; /* Keep text size consistent */
-    box-shadow: none; /* Remove focus outline shadow */
-    background-color: transparent; /* Make background transparent */
+    border: none;
+    border-bottom: 2px solid #000000;
+    border-radius: 0;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    background-color: transparent;
+    box-shadow: none;
+    transition: border-color 0.3s ease-in-out;
 }
 
-/* On focus, change the bottom border color */
 input.form-control:focus {
-    outline: none; /* Remove focus outline */
-    border-bottom: 2px solid #db4437; /* Add a red bottom border on focus */
-    box-shadow: none; /* Remove shadow on focus */
+    outline: none;
+    border-bottom: 2px solid #db4437;
+    box-shadow: none;
 }
 
-/* Placeholder styling */
 input::placeholder {
-    color: #6c757d; /* Slightly muted placeholder text color */
+    color: #6c757d;
     font-size: 0.9rem;
 }
 
-
-/* URL link styling */
+/* Links */
 a {
-    color: #000; /* Black color for links */
-    text-decoration: none; /* Remove underline */
-    font-weight: 600; /* Add some weight for better visibility */
-    transition: color 0.3s ease; /* Smooth color transition */
+    color: #000000;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
-/* URL link hover effect */
 a:hover {
-    color: #db4437; /* Red color on hover for accent */
-    text-decoration: underline; /* Optional underline on hover */
-}
-
-/* Navbar links */
-.navbar-nav .nav-link {
-    color: #000; /* Black links in navbar */
-    font-weight: 500; /* Slightly bold */
-    text-transform: uppercase; /* Consistent style for navigation */
-}
-
-.navbar-nav .nav-link:hover {
-    color: #db4437; /* Red hover effect for branding */
+    color: #db4437;
+    text-decoration: underline;
 }
